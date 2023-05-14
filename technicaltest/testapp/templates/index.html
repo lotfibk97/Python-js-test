@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Users List</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins"
+    />
+
+    <script src="{% static 'script.js' %}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style>
+      .table-responsive {
+        overflow-x: auto;
+        max-height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <input
+            type="text"
+            id="search-box"
+            placeholder="Search users..."
+            onkeyup="filterUsers()"
+            class="form-control mt-2"
+          />
+        </div>
+        <div class="col-md-6"><h1>Users List</h1></div>
+      </div>
+
+      <div class="table-responsive">
+        <table id="user-table" class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th
+                class="sorted"
+                data-column="first_name"
+                data-order="asc"
+                onclick="sortTable('first_name')"
+              >
+                First Name
+              </th>
+              <th
+                data-column="last_name"
+                data-order="asc"
+                onclick="sortTable('last_name')"
+              >
+                Last Name
+              </th>
+              <th
+                data-column="email"
+                data-order="asc"
+                onclick="sortTable('email')"
+              >
+                Email
+              </th>
+              <th
+                data-column="role"
+                data-order="asc"
+                onclick="sortTable('role')"
+              >
+                Role
+              </th>
+              <th
+                data-column="department"
+                data-order="asc"
+                onclick="sortTable('department')"
+              >
+                Department
+              </th>
+              <th data-column="actions">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="user-table-body">
+            {% for user in users %}
+            <tr>
+              <td>{{ user.first_name }}</td>
+              <td>{{ user.last_name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role }}</td>
+              <td>{{ user.department }}</td>
+              <td>
+                <button
+                  onclick="showUserDetails('{{ user.id }}')"
+                  class="btn btn-success btn-sm"
+                >
+                  View
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="pagination" class="mt-4">
+        <button
+          id="previous-button"
+          onclick="previousPage()"
+          class="btn btn-info"
+        >
+          Previous
+        </button>
+        <span id="page-number"
+          >Page {{ users.number }} of {{ users.paginator.num_pages }}</span
+        >
+        <button id="next-button" onclick="nextPage()" class="btn btn-info">
+          Next
+        </button>
+      </div>
+
+      <div id="lightbox" class="hidden">
+        <div id="lightbox-content">
+          <span id="close-button" onclick="closeLightbox()">x</span>
+          <h2 id="lightbox-name"></h2>
+          <p id="lightbox-email"></p>
+          <p id="lightbox-role"></p>
+          <p id="lightbox-department"></p>
+          <p id="lightbox-age"></p>
+          <p id="lightbox-address"></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
